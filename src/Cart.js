@@ -1,5 +1,6 @@
 import React from 'react';
 import CartItem from './CartItem';
+import { indexOf } from 'lodash';
 
 class Cart extends React.Component {
   constructor () {
@@ -32,6 +33,29 @@ class Cart extends React.Component {
     // this.increaseQuantity = this.increaseQuantity.bind(this);
     // this.testing();
   }
+  handleIncreaseQuantitiy=(product)=>{
+    const {products}=this.state;
+    const index = products.indexOf(product);
+    products[index].qty+=1;
+    this.setState({
+      products:products
+    })
+  }
+  handleDecreaseQuantity=(product)=>{
+    const {products}=this.state;
+    const index = products.indexOf(product);
+    console.log(products.indexOf(product))
+    if(products[index].qty===0){
+      return;
+    }
+    
+    products[index].qty-=1;
+    this.setState({
+      products:products
+
+    })
+    
+  }
   render () {
     const { products } = this.state;
     return (
@@ -41,6 +65,8 @@ class Cart extends React.Component {
             <CartItem                           
               product={product}
               key={product.id}
+              onIncreaseQuantity={this.handleIncreaseQuantitiy}
+              onDecreaseQuantity={this.handleDecreaseQuantity}
             />
           )
         })}
